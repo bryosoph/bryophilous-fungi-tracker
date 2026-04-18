@@ -35,11 +35,40 @@ log = logging.getLogger(__name__)
 
 # ── Target taxa ────────────────────────────────────────────────────────────────
 GENUS_TAXA = [
+    # ── Original genera ────────────────────────────────────────────────────
     "Bryoscyphus", "Bryochiton", "Chromocyphella", "Lamprospora",
     "Lizonia", "Octosporella", "Epibryon", "Bryocentria", "Rimbachia",
     "Eocronartium", "Luteodiscus", "Bryonectria", "Loreleia", "Helotium",
     "Bryosphaeria", "Potridiscus", "Gloeopeziza", "Coniochaeta",
     "Bryobroma", "Pithyella", "Bryopistillaria",
+    # ── Added from Döbbeler, Davison & Buck (2023) Herzogia 36: 305–370 ───
+    "Acrospermum",       # on pleurocarpous mosses
+    "Belonioscyphella",  # necrotrophic on mosses and liverworts
+    "Bryorella",         # on hypnalean mosses
+    "Bryotria",          # on Frullania
+    "Chlorociboria",     # on Polytrichaceae
+    "Dactylospora",      # on liverworts
+    "Dawsomyces",        # interlamellar, Polytrichaceae
+    "Didymella",         # on Riccia
+    "Epicoccum",         # on Plagiochila
+    "Filicupula",        # on Frullania (Pezizales)
+    "Hilberina",         # on Sphagnum
+    "Hypobryon",         # leaf-perforating, on Frullania
+    "Laniatria",         # on Frullania kunzei
+    "Leptomeliola",      # on Ptilidium
+    "Mniaecia",          # green apothecia on liverworts
+    "Muellerella",       # on Frullania and Radula
+    "Neottiella",        # on Riccia and mosses (Pezizales)
+    "Octospora",         # large genus on mosses (Pezizales)
+    "Paruephaedria",     # on leafy liverworts
+    "Periantria",        # perianth-perforating on Frullania
+    "Potriphila",        # interlamellar, Polytrichaceae
+    "Protothelenella",   # on Polytrichastrum sexangulare
+    "Pseudomicrodochium",# conidial, on Nowellia/Ptilidium
+    "Roseodiscus",       # necrotrophic on liverworts and mosses
+    "Stemphylium",       # on Leptodictyum riparium
+    "Trichosphaerella",  # on Ptilidium
+    "Trizodia",          # cyanotrophic, on Sphagnum
 ]
 
 SPECIES_TAXA = [
@@ -71,19 +100,116 @@ SPECIES_TAXA = [
     "Bryobroma microcarpum",
     "Bryobroma velenovskyi",
     "Bryobroma microcarpum var. racomitrii",
-    "Hilberina sphagnorum",           # was missing
+    "Hilberina sphagnorum",
     "Epibryon diaphanum",
     "Epibryon hepaticicola",
     "Epibryon dicrani",
     "Epibryon interlamellare",
     "Octospora leucoloma",
-    "Hyphodiscus delitescens",        # was missing
+    "Hyphodiscus delitescens",
     "Pithyella chalaudii",
     "Bryocentria brongniartii",
     "Hymenoscyphus vasaensis",
     "Rickenella swartzii",
     # Family-level — iNat resolves these fine via taxa search
     "Coniochaetaceae",
+    # ── Added from Döbbeler, Davison & Buck (2023) Herzogia 36: 305–370 ───
+    # Acrospermum
+    "Acrospermum adeanum",
+    # Belonioscyphella
+    "Belonioscyphella hypnorum",
+    # Bryocentria (additional species)
+    "Bryocentria biannulata",
+    "Bryocentria chrysothrix",
+    "Bryocentria lusor",
+    "Bryocentria navicula",
+    "Bryocentria pachydesma",
+    "Bryocentria pentamera",
+    # Bryochiton (additional species)
+    "Bryochiton heliotropicus",
+    "Bryochiton perpusillus",
+    # Bryonectria (species)
+    "Bryonectria anisopoda",
+    "Bryonectria aphanes",
+    "Bryonectria callicarpa",
+    "Bryonectria cuneifera",
+    "Bryonectria hylocomii",
+    "Bryonectria phyllogena",
+    # Bryorella
+    "Bryorella acrogena",
+    # Bryoscyphus (additional species)
+    "Bryoscyphus hyalotectus",
+    # Bryotria
+    "Bryotria adelpha",
+    "Bryotria lagodes",
+    "Bryotria urophora",
+    # Chlorociboria
+    "Chlorociboria lamellicola",
+    # Dawsomyces
+    "Dawsomyces subinvisibilis",
+    # Didymella
+    "Didymella hepaticarum",
+    # Epicoccum
+    "Epicoccum plagiochilae",
+    # Epibryon (additional species)
+    "Epibryon arachnoideum",
+    "Epibryon harrisii",           # new species described in this paper
+    "Epibryon hypophyllum",
+    "Epibryon intercapillare",
+    "Epibryon intercellulare",
+    "Epibryon pogonati-urnigeri",
+    "Epibryon ventrale",
+    # Filicupula
+    "Filicupula cyanopoda",
+    "Filicupula sororia",
+    # Gloeopeziza (additional species)
+    "Gloeopeziza interlamellaris",
+    # Hilberina
+    "Hilberina sphagni",
+    # Hypobryon
+    "Hypobryon bacillare",
+    "Hypobryon florentinum",
+    # Laniatria
+    "Laniatria myxostoma",
+    # Leptomeliola
+    "Leptomeliola ptilidii",
+    # Lizonia (additional species)
+    "Lizonia emperigonia",
+    "Lizonia sexangularis",
+    # Muellerella
+    "Muellerella frullaniae",
+    "Muellerella rubescens",
+    # Octospora (additional species)
+    "Octospora ithacaensis",
+    # Octosporella (additional species)
+    "Octosporella brevibarbata",
+    "Octosporella caudifera",
+    "Octosporella imitatrix",
+    "Octosporella jungermanniarum",
+    "Octosporella ornithocephala",
+    # Paruephaedria
+    "Paruephaedria heimerlii",
+    # Periantria
+    "Periantria bellacaptiva",
+    "Periantria frullaniae",
+    # Pithyella (additional species)
+    "Pithyella trigona",
+    # Potriphila
+    "Potriphila navicularis",
+    # Protothelenella
+    "Protothelenella polytrichi",
+    # Pseudomicrodochium
+    "Pseudomicrodochium bryophilum",
+    # Roseodiscus
+    "Roseodiscus subcarneus",
+    # Stemphylium
+    "Stemphylium botryosum",
+    # Trichosphaerella
+    "Trichosphaerella goniospora",
+    # Trizodia
+    "Trizodia acrobia",
+    # Bryocentria pachydesma — new sp. described in paper (Alabama)
+    # (already listed above)
 ]
 
 # ── iNaturalist API ────────────────────────────────────────────────────────────
