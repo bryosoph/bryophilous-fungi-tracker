@@ -1,6 +1,6 @@
 # 🍄 Bryophilous Fungi Tracker
 
-Automatically syncs all iNaturalist observations for **bryophilous fungi** (fungi that grow on bryophytes — mosses and liverworts) into a continuously-updated species sheet with full coordinate data and metadata.
+Automatically syncs all iNaturalist observations for **bryophilous fungi** (fungi obligate on bryophytes — mosses, liverworts, & hornworts) into a continuously-updated species sheet with full coordinate data and metadata.
 
 ## 📋 What's tracked
 
