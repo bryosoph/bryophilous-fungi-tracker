@@ -450,28 +450,84 @@ def save_csv(rows: list[dict], path: Path):
         writer.writerows(rows)
     log.info(f"CSV saved → {path} ({len(rows)} rows)")
 
+def save_sqlite(rows: list[dict], db_path: Path):
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
 
-def save_sqlite(rows: list[dict], path: Path):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(path)
-    cur  = conn.cursor()
-    cols = ", ".join(f'"{c}" TEXT' for c in CSV_FIELDS)
-    cur.execute(
-        f'CREATE TABLE IF NOT EXISTS observations ({cols}, PRIMARY KEY ("id"))'
-    )
-    ph  = ", ".join("?" for _ in CSV_FIELDS)
-    col = ", ".join(f'"{c}"' for c in CSV_FIELDS)
-    for row in rows:
-        cur.execute(
-            f'INSERT OR REPLACE INTO observations ({col}) VALUES ({ph})',
-            [str(row.get(c, "")) for c in CSV_FIELDS],
+    # Create table with full schema
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS observations (
+            id                              INTEGER PRIMARY KEY,
+            uuid                            TEXT,
+            quality_grade                   TEXT,
+            observed_on                     TEXT,
+            observed_time_zone              TEXT,
+            created_at                      TEXT,
+            updated_at                      TEXT,
+            time_observed_at                TEXT,
+            month                           INTEGER,
+            day_of_year                     INTEGER,
+            week_of_year                    INTEGER,
+            season                          TEXT,
+            hemisphere                      TEXT,
+            taxon_id                        INTEGER,
+            taxon_name                      TEXT,
+            taxon_rank                      TEXT,
+            taxon_common_name               TEXT,
+            taxon_ancestry                  TEXT,
+            latitude                        REAL,
+            longitude                       REAL,
+            positional_accuracy             REAL,
+            place_guess                     TEXT,
+            place_ids                       TEXT,
+            obscured                        TEXT,
+            geoprivacy                      TEXT,
+            user_id                         INTEGER,
+            user_login                      TEXT,
+            user_name                       TEXT,
+            num_identification_agreements   INTEGER,
+            num_identification_disagreements INTEGER,
+            identifications_most_agree      TEXT,
+            species_guess                   TEXT,
+            description                     TEXT,
+            tag_list                        TEXT,
+            url                             TEXT,
+            image_url                       TEXT,
+            sound_url                       TEXT,
+            license_code                    TEXT,
+            captive_cultivated              TEXT,
+            out_of_range                    TEXT,
+            native                          TEXT,
+            introduced                      TEXT,
+            endemic                         TEXT,
+            threatened                      TEXT
         )
+    """)
+
+    # Migrate: add any columns present in CSV_FIELDS but missing from the DB
+    cur.execute("PRAGMA table_info(observations)")
+    existing_cols = {row[1] for row in cur.fetchall()}
+    for col in CSV_FIELDS:
+        if col not in existing_cols:
+            cur.execute(f"ALTER TABLE observations ADD COLUMN {col} TEXT")
+            log.info(f"  Migrated DB: added column '{col}'")
+
+    # Upsert all rows
+    placeholders = ", ".join("?" * len(CSV_FIELDS))
+    col_names    = ", ".join(CSV_FIELDS)
+    cur.executemany(
+        f"INSERT OR REPLACE INTO observations ({col_names}) VALUES ({placeholders})",
+        [
+            [str(row.get(col, "")) for col in CSV_FIELDS]
+            for row in rows
+        ],
+    )
+
     conn.commit()
-    count = cur.execute("SELECT COUNT(*) FROM observations").fetchone()[0]
     conn.close()
-    log.info(f"SQLite saved → {path} ({count} total rows)")
-
-
+    log.info(f"SQLite saved → {db_path} ({len(rows)} rows)")
+  
 def save_phenology_summary(rows: list[dict], out_dir: Path):
     """
     Write two phenology pivot tables:
