@@ -1,3 +1,3 @@
-Last sync: 2026-04-24T08:00:06.056047 UTC
-Total observations: 28117
+Last sync: 2026-04-25T07:13:18.934809 UTC
+Total observations: 28124
 Taxa queried: 181
